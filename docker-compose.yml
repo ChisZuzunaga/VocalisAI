@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/secrets/google_credentials.json
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5174:5174"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # evita conflictos si usas volumes y node_modules está en .dockerignore
+    depends_on:
+      - backend
+    restart: unless-stopped
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # hace que hot reload funcione en Docker
