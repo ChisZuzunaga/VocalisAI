@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import api from "../services/api";
 
 const AudioRecorder = () => {
   const mediaRecorderRef = useRef(null);
@@ -6,36 +7,49 @@ const AudioRecorder = () => {
   const [recording, setRecording] = useState(false);
 
   const startRecording = async () => {
-    setRecording(true);
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorderRef.current = new MediaRecorder(stream);
-    audioChunksRef.current = [];
+    try {
+      setRecording(true);
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream, {
+        mimeType: "audio/webm;codecs=opus",
+      });
+      audioChunksRef.current = [];
 
-    mediaRecorderRef.current.ondataavailable = (e) => {
-      if (e.data.size > 0) {
-        audioChunksRef.current.push(e.data);
-      }
-    };
+      mediaRecorderRef.current.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunksRef.current.push(e.data);
+      };
 
-    mediaRecorderRef.current.onstop = () => {
-      const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-      const formData = new FormData();
-      formData.append('file', audioBlob, 'audio.webm');
-
-      fetch('http://localhost:8000/upload-audio', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.ok ? alert('Audio enviado con éxito') : alert('Error al enviar'))
-      .catch(err => console.error(err));
-    };
-
-    mediaRecorderRef.current.start();
+      mediaRecorderRef.current.start();
+    } catch (err) {
+      console.error("No se pudo acceder al micrófono:", err);
+      alert("Permite el micrófono o revisa la consola");
+    }
   };
 
-  const stopRecording = () => {
+  const stopRecording = async () => {
     setRecording(false);
     mediaRecorderRef.current.stop();
+
+    // espera a que se dispare onstop
+    mediaRecorderRef.current.onstop = async () => {
+      const blob = new Blob(audioChunksRef.current, {
+        type: "audio/webm",
+      });
+      const formData = new FormData();
+      formData.append("file", blob, "audio.webm");
+
+      try {
+        const { status } = await api.post("/upload-audio", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        if (status === 200) {
+          alert("Audio enviado con éxito");
+        }
+      } catch (err) {
+        console.error("Error al enviar audio:", err);
+        alert("Error al enviar");
+      }
+    };
   };
 
   return (

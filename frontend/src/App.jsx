@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import axios from 'axios';
+import api from './services/api';
 
 function App() {
   const [random, setRandom] = useState(null);
 
   const fetchRandomNumber = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/random');
+      const response = await api.get('/random');
       setRandom(response.data.number);
     } catch (error) {
       console.error("Error fetching number:", error);

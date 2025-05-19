@@ -1,5 +1,7 @@
+# -----------------------------
 # Logs
-logs
+# -----------------------------
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,22 +9,50 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# -----------------------------
+# Frontend (Node / Vite)
+# -----------------------------
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.vite/
+/frontend/ngrok.exe
+/frontend/certs/
+/frontend/*.local
+/frontend/package-lock.json
+/frontend/yarn.lock
+/frontend/pnpm-lock.yaml
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
+# -----------------------------
+# Backend (Python)
+# -----------------------------
+/backend/.venv/
+/backend/__pycache__/
+/backend/*.py[cod]
+/backend/audios/
+/backend/secrets/
+/backend/.env
+
+# -----------------------------
+# Build outputs
+# -----------------------------
+/dist
+/dist-ssr
+
+# -----------------------------
+# Editor / OS files
+# -----------------------------
+.vscode/
+/.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+.DS_Store
+Thumbs.db
 
-backend/.env
-backend/secrets/
-
+# -----------------------------
+# Docker
+# -----------------------------
+Dockerfile
+.dockerignore

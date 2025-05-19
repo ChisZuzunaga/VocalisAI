@@ -13,7 +13,7 @@ AUDIO_DIR.mkdir(exist_ok=True)
 # Habilitar CORS para frontend (ajusta la URL si es diferente)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5174"],  # Vite default port
+    allow_origins=["*"],  # Vite default port
     allow_methods=["*"],
     allow_headers=["*"],
 )
