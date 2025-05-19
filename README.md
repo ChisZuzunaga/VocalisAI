@@ -16,6 +16,7 @@ choco install mkcert
 ## Backend
 uvicorn main:app --reload #LOCAL
 uvicorn main:app --reload --host 0.0.0.0 --port 8000 #HOST
+./ngrok.exe http 5174
 
 ## Frontend
 npm run dev
