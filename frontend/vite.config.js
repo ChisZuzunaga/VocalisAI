@@ -18,7 +18,16 @@ export default defineConfig({
       '/upload-audio': {
         target: 'http://localhost:8000',
         changeOrigin: true
-      }
+      },
+      // proxy para tu endpoint de speech-to-text
+      '/speech-to-text': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
+      },
+      '/audio': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
+     }
     }
   }
 })

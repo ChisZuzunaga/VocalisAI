@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      <h1>Generador de número aleatorio</h1>
+      <h1>Generador de númerooo aleatorio</h1>
       <button onClick={fetchRandomNumber}>Obtener número</button>
       {random !== null && <p>Número aleatorio: {random}</p>}
     </div>
