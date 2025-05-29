@@ -1,25 +1,20 @@
-import { useState } from 'react';
-import api from './services/api';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Loader from './components/Loader.jsx'
+import AudioRecorder from './pages/AudioRecorder.jsx'
+import RandomNum from './pages/RandomNum.jsx'
+import TranscriptionPage from './pages/TranscriptionPage.jsx'
 
 function App() {
-  const [random, setRandom] = useState(null);
-
-  const fetchRandomNumber = async () => {
-    try {
-      const response = await api.get('/random');
-      setRandom(response.data.number);
-    } catch (error) {
-      console.error("Error fetching number:", error);
-    }
-  };
-
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Generador de númerooo aleatorio</h1>
-      <button onClick={fetchRandomNumber}>Obtener número</button>
-      {random !== null && <p>Número aleatorio: {random}</p>}
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<RandomNum />} />
+        <Route path="/loader" element={<Loader />} />
+        <Route path="/transcription" element={<TranscriptionPage />} />
+        <Route path="/record" element={<AudioRecorder />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App

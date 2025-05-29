@@ -1,0 +1,12 @@
+@keyframes jump {
+  20%, 20%, 0% { transform: translateY(0); }
+  100%           { transform: translateY(-10px); }
+}
+
+.jump-char {
+  display: inline-block;
+  /* eliminamos margin para no sobreponer caracteres */
+  animation: jump .9s infinite alternate;
+  /* si quieres más espacio entre letras: */
+  margin: 0 .05em;
+}
