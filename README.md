@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Python 3.9](https://img.shields.io/badge/Python-3.9-green.svg)](https://shields.io/)
+[![Python 3.12.4](https://img.shields.io/badge/python-3.12.4-blue)](https://shields.io/)
 
 This repository contains the code for Vocalis, a FastAPI & React speech-to-text application.
 
@@ -9,7 +9,7 @@ Do Not fork this code! It is meant to be used by pressing the  <span style=color
 
 ## Development Environment
 
-We target Windows and use a Python 3.9 virtual environment plus Node 14+.
+We target Windows and use a Python 3.12.4 virtual environment plus Node 14+.
 
 1. Clone the repo
 2. Open a **CMD** in the project root
@@ -28,9 +28,9 @@ npm install tailwindcss @tailwindcss/vite
 
 ## Useful commands
 
-### Activate the Python 3.9 virtual environment
+### Activate the Python 3.12.4 virtual environment
 
-You can activate the Python 3.9 environment with:
+You can activate the Python 3.12.4 environment with:
 
 ```bash
 .\.venv\Scripts\Activate.bat
@@ -82,8 +82,10 @@ npm run dev
 
 ## Author
 
-[Ignacio Guerra](https://github.com/ChisZuzunaga), [Franco Muñoz](https://github.com/TheSniperS2), Team Vocalis
+[Ignacio Guerra](https://github.com/ChisZuzunaga), Software Developer [Franco Muñoz](https://github.com/TheSniperS2), Software Engineer (Team Vocalis)
 
 ## License
 
 Licensed under the Apache License. See [LICENSE](LICENSE)
+
+## <h3 align="center"> © Vocalis 2025. All rights reserved. <h3/>
