@@ -15,7 +15,6 @@ lerna-debug.log*
 /frontend/node_modules/
 /frontend/dist/
 /frontend/.vite/
-/frontend/ngrok.exe
 /frontend/certs/
 /frontend/*.local
 /frontend/package-lock.json

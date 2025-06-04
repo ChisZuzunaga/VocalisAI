@@ -13,15 +13,17 @@ We target Windows and use a Python 3.9 virtual environment plus Node 14+.
 
 1. Clone the repo
 2. Open a **CMD** in the project root
-3. Activate the Python venv and install Python dependencies
+3. Create and activate the Backedn Python Venv and install Python dependencies
 ```bash
+cd backend
+python -m venv .venv
 .\.venv\Scripts\Activate.bat
-pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-4. Install frontend dependencies
+4. in another **CMD**, Install frontend dependencies (Deactivate Virtual Enviorement)
 ```bash
+cd frontend
 npm install
 npm install tailwindcss @tailwindcss/vite
 ```
@@ -36,19 +38,11 @@ You can activate the Python 3.9 environment with:
 .\.venv\Scripts\Activate.bat
 ```
 
-### Installing Python dependencies
-
-Install Python dependencies (again, if needed)
-
-```bash
-pip install -r requirements.txt
-```
-
 ### Starting the backend (FastAPI + Uvicorn)
 
 ```bash
 uvicorn main:app --reload         # local only
-uvicorn main:app --reload --host 0.0.0.0 --port 8000   # listen on all interfaces
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload   # listen on all interfaces
 ```
 
 ### Expose your frontend via ngrok
@@ -60,7 +54,7 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000   # listen on all interface
 ### Start the frontend (Vite + React)
 
 ```bash
-npm run dev
+npm run host
 ```
 
 ## Project layout
@@ -79,6 +73,33 @@ npm run dev
 │   └── tailwind.config.js   ← Tailwind CSS config
 └── README.md                ← this file
 ```
+
+## Possible Errors
+
+If you encounter the following error when running the project:
+
+```js
+[vite] http proxy error: /random
+Error: connect ECONNREFUSED ::1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1615:16)
+```
+
+This usually means the Vite development server is attempting to proxy to localhost, which is being resolved as the IPv6 address ::1. However, the backend server might only be listening on the IPv4 address (127.0.0.1), causing the connection to be refused.
+
+## Solution
+
+To fix this, open the [vite.config.js] file inside the [frontend] folder and replace all instances of:
+
+```js
+target: 'http://localhost:8000'
+```
+
+with:
+
+```js
+target: 'http://127.0.0.1:8000'
+```
+This change forces the Vite proxy to use IPv4 instead of IPv6, ensuring proper communication with the backend.
 
 ## Author
 
