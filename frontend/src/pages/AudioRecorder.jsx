@@ -5,6 +5,7 @@ import Loader from '../components/Loader'
 import micIcon from '../assets/micro.png'
 import '../styles/AudioRecorder.css'
 
+
 const MAX_DURATION = 6 // segundos
 
 const AudioRecorder = () => {
@@ -69,7 +70,7 @@ const AudioRecorder = () => {
   if (loading) return <Loader />
 
   return (
-    <div>
+    <div className='container-mega'>
       <div className="recorder-container select-none">
           <div className="mic-wrapper">
             <button

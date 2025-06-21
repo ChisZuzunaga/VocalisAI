@@ -1,11 +1,16 @@
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Loader from './components/Loader.jsx'
 import AudioRecorder from './pages/AudioRecorder.jsx'
 import RandomNum from './pages/RandomNum.jsx'
 import TranscriptionPage from './pages/TranscriptionPage.jsx'
+import ChatLayout from './layouts/ChatLayout.jsx'
+import Test from './layouts/Test.jsx'
+import Sidebar from './components/Sidebar.jsx'
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     // solicitamos permiso de audio al montar la app
     async function askMicPermission() {
@@ -22,12 +27,16 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<RandomNum />} />
-        <Route path="/loader" element={<Loader />} />
-        <Route path="/transcription" element={<TranscriptionPage />} />
-        <Route path="/record" element={<AudioRecorder />} />
-      </Routes>
+      <Sidebar>
+        <Routes>
+          <Route path="/" element={<RandomNum />} />
+          <Route path="/loader" element={<Loader />} />
+          <Route path="/transcription" element={<TranscriptionPage />} />
+          <Route path="/record" element={<AudioRecorder />} />
+          <Route path="/chat" element={<ChatLayout />} />
+          <Route path="/ai" element={<Test />} />
+        </Routes>
+      </Sidebar>
     </BrowserRouter>
   )
 }

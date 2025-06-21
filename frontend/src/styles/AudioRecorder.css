@@ -1,9 +1,33 @@
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #f3f4f6; /* gray-100 */
+}
+
 .recorder-container {
-  position: relative;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  
+}
+.container-mega {
+  /* centra su contenido si quieres */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  /* elimina márgenes internos o externos */
+  margin: 0;
+  padding: 0;
+}
+
+.test {
+  height: 100vh;
+  background-color: rgb(223, 209, 255);
 }
 .mic-wrapper {
   position: relative;

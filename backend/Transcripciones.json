@@ -250,5 +250,65 @@
   {
     "timestamp": "2025-06-04T16:13:13.094977",
     "transcript": "hola prueba 1 2 3"
+  },
+  {
+    "timestamp": "2025-06-19T08:27:28.677237",
+    "transcript": "probando probando"
+  },
+  {
+    "timestamp": "2025-06-19T09:16:30.804485",
+    "transcript": "(no se detectó voz)"
+  },
+  {
+    "timestamp": "2025-06-19T09:16:42.059210",
+    "transcript": "(no se detectó voz)"
+  },
+  {
+    "timestamp": "2025-06-19T09:16:47.395015",
+    "transcript": "probando probando"
+  },
+  {
+    "timestamp": "2025-06-19T11:15:49.517446",
+    "transcript": "(no se detectó voz)"
+  },
+  {
+    "timestamp": "2025-06-19T11:16:42.130322",
+    "transcript": "(no se detectó voz)"
+  },
+  {
+    "timestamp": "2025-06-19T11:16:52.738011",
+    "transcript": "cómo estás"
+  },
+  {
+    "timestamp": "2025-06-19T11:17:13.728983",
+    "transcript": "hola cómo estás"
+  },
+  {
+    "timestamp": "2025-06-19T11:17:23.976918",
+    "transcript": "quiero saber cuál es el multiplicador"
+  },
+  {
+    "timestamp": "2025-06-19T11:17:57.871743",
+    "transcript": "cuál es la capital de Australia"
+  },
+  {
+    "timestamp": "2025-06-20T22:29:53.409844",
+    "transcript": "prueba prueba prueba"
+  },
+  {
+    "timestamp": "2025-06-20T22:30:14.323956",
+    "transcript": "(no se detectó voz)"
+  },
+  {
+    "timestamp": "2025-06-20T22:30:22.261965",
+    "transcript": "(no se detectó voz)"
+  },
+  {
+    "timestamp": "2025-06-20T22:30:28.514285",
+    "transcript": "(no se detectó voz)"
+  },
+  {
+    "timestamp": "2025-06-20T22:30:33.324587",
+    "transcript": "hola Benjamín"
   }
 ]

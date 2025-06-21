@@ -1,0 +1,207 @@
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Sidebar base */
+.sidebar {
+  position: fixed;
+  left: 0; top: 0;
+  width: 60px;
+  height: 100%;
+  background: #212327;
+  color: #ecf0f1;
+  transition: width .3s;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.sidebar-open .sidebar {
+  width: 250px;
+}
+
+/* Botón dentro del sidebar */
+.toggle-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  padding: .75rem 0;
+  width: 60px; 
+  height: 75px;
+  cursor: pointer;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-collapsed, .menu-open, .chats-links {
+    margin-top: 50px;
+}
+
+.chats-links {
+    font-size: 1.5rem;
+    color: #79747E;
+}
+.sidebar .logo-text {
+  display: none; /* Oculta el texto del logo cuando está colapsado */
+}
+
+.sidebar-open .logo-text {
+  display: block; /* Muestra el texto del logo cuando está abierto */
+  font-size: 2.25rem;
+  color: #ecf0f1;
+  justify-content: flex-start;
+  background: linear-gradient(90deg, #4D6BFE 0%, #FD5352 100%);
+  font-weight: 500;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sidebar-open .toggle-btn {
+    width: 30px;
+    height: 30px;
+}
+
+.menu-open a:not(.chats-links):hover {
+    background-color: #404045;
+    border-radius: 10px;
+}
+
+.menu-open {
+    justify-content: center;
+}
+.menu-open-item {
+  width: 234px;
+  height: 46px;
+  margin-left: 8px;
+  margin-bottom: 5px;
+}
+
+.menu-open a {
+  display: flex;
+  align-items: center;
+  padding: .5rem 1rem;
+  text-decoration: none;
+}
+
+.sidebar-open .logo-container {
+    padding: .5rem 1rem;
+}
+.menu-icon {
+  width: 51px;
+  height: 51px;
+  object-fit: contain;
+}
+
+.menu-open-item,
+.menu-collapsed-item {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.menu-open-item .menu-label {
+  margin-left: .5rem;
+}
+
+/* Cuando está colapsado, sólo iconos centrados */
+.menu-collapsed-item {
+  justify-content: center;
+}
+
+/* Contenido “empujado” */
+.content {
+  margin-left: 60px;
+  flex: 1;
+  transition: margin-left .3s, margin-top .3s;
+  overflow: auto;
+}
+
+.sidebar-open .content {
+  margin-left: 250px;
+}
+
+/* antes de todo lo demás, define la animación base para los labels */
+.menu-label {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: 
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+/* cuando el sidebar tenga la clase .sidebar-open (o .menu-open-item),
+   hacemos que los labels salten a su posición final */
+.sidebar-open .menu-label,
+.menu-open-item .menu-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* opcional: escalona un poco cada label para un efecto “cascade” */
+.menu-open-item:nth-child(1) .menu-label { transition-delay: 0.1s; }
+.menu-open-item:nth-child(2) .menu-label { transition-delay: 0.15s; }
+.menu-open-item:nth-child(3) .menu-label { transition-delay: 0.2s; }
+/* …ajusta según el número de items que tengas… */
+
+/* Navbar móvil (hasta 765px) */
+.mobile-navbar {
+  display: none;
+}
+
+.toggle-btn img,
+.mobile-toggle-btn img {
+  width: 51px;
+  height: 51px;
+  pointer-events: none; /* para que el hover lo gestione el botón */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 765px) {
+  .mobile-navbar {
+    display: flex;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 50px;
+    background: #34495e;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 0;
+  }
+  .mobile-toggle-btn {
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  .sidebar {
+    position: fixed;
+    left: -250px; /* Oculta el sidebar */
+    transition: left .3s;
+  }
+  .sidebar-open .sidebar {
+    left: 0; /* Muestra el sidebar al abrir */
+  }
+  /* Desaparece el push horizontal y se añade espacio top */
+  .content {
+    margin-left: 0 !important;
+    margin-top: 50px;
+  }
+}
