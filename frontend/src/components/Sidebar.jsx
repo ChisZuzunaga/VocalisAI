@@ -6,11 +6,11 @@ import closeIconHover from '../assets/close_menu_sb_f_h.svg'
 
 import addChat from '../assets/add_chat_sb_c.svg'
 import addChatHover from '../assets/add_chat_sb_c_h.svg'
-import addChatFull from '../assets/add_chat_sb_f.svg'
+import addChatFull from '../assets/add_chat_sb_f2.svg'
 
 import VolumeUp from '../assets/volume_up_sb_c.svg'
 import VolumeUpHover from '../assets/volume_up_sb_c_h.svg'
-import VolumeUpFull from '../assets/volume_up_sb_f.svg'
+import VolumeUpFull from '../assets/volume_up_sb_f2.svg'
 
 import ChatIcon from '../assets/chat_sb_c.svg'
 import ChatIconHover from '../assets/chat_sb_c_h.svg'
@@ -19,21 +19,38 @@ import '../styles/Sidebar.css'
 
 function MenuItem({ href, label, icon, iconHover, open }) {
   const [hover, setHover] = useState(false)
+  const [showTip, setShowTip] = useState(false)
+  const Tag = href ? 'a' : 'button'
+  const props = href ? { href } : {}
+
   return (
-    <a
-      href={href}
-      className={ open ? 'menu-open-item' : 'menu-collapsed-item' }
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      title={!open ? label : undefined}
+    <Tag
+      {...props}
+      className={`menu-item ${open ? 'open' : 'collapsed'}`}
+      onMouseEnter={() => {
+        setHover(true)
+        if (!open) setShowTip(true)
+      }}
+      onMouseLeave={() => {
+        setHover(false)
+        setShowTip(false)
+      }}
+      aria-label={!open ? label : undefined}
     >
       <img
-        src={ hover ? iconHover : icon }
-        alt={label}
         className="menu-icon"
+        src={hover ? iconHover : icon}
+        alt={label}
       />
       {open && <span className="menu-label">{label}</span>}
-    </a>
+
+      {/* tooltip personalizado */}
+      {showTip && (
+        <div className="tooltip">
+          {label}
+        </div>
+      )}
+    </Tag>
   )
 }
 
@@ -105,21 +122,21 @@ export default function Sidebar({ children }) {
                     href="/"
                     label="Nuevo Chat"
                     icon={addChatFull}
-                    iconHover={addChatHover}
+                    iconHover={addChatFull}
                     open={open}
                 />
                 <MenuItem
                     href="/"
                     label="Texto a voz"
                     icon={VolumeUpFull}
-                    iconHover={VolumeUpHover}
+                    iconHover={VolumeUpFull}
                     open={open}
                 />
                 {/* …en abierto mostramos icon+texto… */}
 
-                <a className="chats-links">
+                <p className="chats-links">
                     Chats
-                </a>
+                </p>
                 
             </nav>
             )
@@ -127,21 +144,21 @@ export default function Sidebar({ children }) {
             <nav className="menu menu-collapsed">
                 <MenuItem
                     href="/"
-                    label=""
+                    label="Chats"
                     icon={ChatIcon}
                     iconHover={ChatIconHover}
                     open={closed}
                 />
                 <MenuItem
                     href="/"
-                    label=""
+                    label="Nuevo Chat"
                     icon={addChat}
                     iconHover={addChatHover}
                     open={closed}
                 />
                 <MenuItem
                     href="/"
-                    label=""
+                    label="Texto a voz"
                     icon={VolumeUp}
                     iconHover={VolumeUpHover}
                     open={closed}

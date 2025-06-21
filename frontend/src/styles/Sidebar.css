@@ -12,14 +12,15 @@ html, body, #root {
 
 /* Sidebar base */
 .sidebar {
-  position: fixed;
+  position: relative;
   left: 0; top: 0;
   width: 60px;
   height: 100%;
   background: #212327;
   color: #ecf0f1;
   transition: width .3s;
-  overflow: hidden;
+  overflow-x: visible;
+  overflow-y: visible;
   z-index: 1;
 }
 
@@ -40,15 +41,25 @@ html, body, #root {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: 
+    transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+    box-shadow 0.3s ease;
+  transform-origin: center;
 }
 
 .menu-collapsed, .menu-open, .chats-links {
     margin-top: 50px;
 }
-
+.sidebar-open .toggle-btn {
+  transform: rotate(180deg);
+}
+.toggle-btn:hover {
+  transform: rotate(180deg) scale(1.15);
+}
 .chats-links {
     font-size: 1.5rem;
     color: #79747E;
+    margin-left: 16px;
 }
 .sidebar .logo-text {
   display: none; /* Oculta el texto del logo cuando está colapsado */
@@ -66,6 +77,25 @@ html, body, #root {
   -webkit-text-fill-color: transparent;
 }
 
+.menu-item.collapsed {
+  position: relative;
+}
+
+/* tooltip personalizado */
+.tooltip {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translate(8px, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  pointer-events: none;
+  z-index: 100;
+}
 .sidebar-open .toggle-btn {
     width: 30px;
     height: 30px;
@@ -84,13 +114,33 @@ html, body, #root {
   height: 46px;
   margin-left: 8px;
   margin-bottom: 5px;
+  margin-top: 8px;
 }
-
+.menu-item {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: background-color .2s;
+  text-decoration: none;
+  color: inherit;
+  padding: .25rem .5rem;
+  border-radius: 4px;
+  margin: .25rem 0;
+}
+.menu-item.collapsed {
+  justify-content: center;
+  padding: .5rem; /* cuadrado para icono */
+}
 .menu-open a {
   display: flex;
   align-items: center;
-  padding: .5rem 1rem;
+  padding: .5rem 0rem;
   text-decoration: none;
+  width: 236px;
+  height: 50px;
+  margin-left: 7px;
 }
 
 .sidebar-open .logo-container {
@@ -100,8 +150,11 @@ html, body, #root {
   width: 51px;
   height: 51px;
   object-fit: contain;
+  transition: opacity .2s ease, transform .2s ease;
 }
-
+.toggle-btn-collpased {
+    margin-top: 15px;
+}
 .menu-open-item,
 .menu-collapsed-item {
   display: flex;
@@ -121,23 +174,19 @@ html, body, #root {
 
 /* Contenido “empujado” */
 .content {
-  margin-left: 60px;
   flex: 1;
   transition: margin-left .3s, margin-top .3s;
   overflow: auto;
 }
 
-.sidebar-open .content {
-  margin-left: 250px;
-}
+
 
 /* antes de todo lo demás, define la animación base para los labels */
 .menu-label {
+  margin-left: .5rem;
   opacity: 0;
   transform: translateX(-10px);
-  transition: 
-    opacity 0.3s ease,
-    transform 0.3s ease;
+  transition: opacity .3s, transform .3s;
 }
 
 /* cuando el sidebar tenga la clase .sidebar-open (o .menu-open-item),
@@ -171,7 +220,19 @@ html, body, #root {
   align-items: center;
   justify-content: space-between;
 }
-
+@media (min-width: 766px) {
+  .mobile-navbar {
+    display: none; /* Oculta la navbar móvil en pantallas grandes */
+  }
+.mobile-toggle-btn {
+  display: none; /* Oculto por defecto */
+  background: none;
+  border: none;
+  color: #ecf0f1;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+}
 @media (max-width: 765px) {
   .mobile-navbar {
     display: flex;
