@@ -1,19 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react'
-import menuIcon from '../assets/logo3.png'
+import menuIcon from '../assets/logo_white.png'
 import menuIconHover from '../assets/menu_sb_c_h.svg'
 import closeIcon from '../assets/close_menu_sb_f.svg'
 import closeIconHover from '../assets/close_menu_sb_f_h.svg'
 
-import addChat from '../assets/add_chat_sb_c.svg'
-import addChatHover from '../assets/add_chat_sb_c_h.svg'
+// import addChat from '../assets/add_chat_sb_c.svg'
+// import addChatHover from '../assets/add_chat_sb_c_h.svg'
 import addChatFull from '../assets/add_chat_sb_f2.svg'
 
-import VolumeUp from '../assets/volume_up_sb_c.svg'
-import VolumeUpHover from '../assets/volume_up_sb_c_h.svg'
+// import VolumeUp from '../assets/volume_up_sb_c.svg'
+// import VolumeUpHover from '../assets/volume_up_sb_c_h.svg'
 import VolumeUpFull from '../assets/volume_up_sb_f2.svg'
 
-import ChatIcon from '../assets/chat_sb_c.svg'
-import ChatIconHover from '../assets/chat_sb_c_h.svg'
+// import ChatIcon from '../assets/chat_sb_c.svg'
+// import ChatIconHover from '../assets/chat_sb_c_h.svg'
+
+import VolumeUpNew from '../assets/volume_up_sb_c_new.svg'
+import VolumeUpNewHover from '../assets/volume_up_sb_c_new_h.svg'
+
+import addChatNew from '../assets/add_chat_sb_c_new.svg'
+import addChatNewHover from '../assets/add_chat_sb_c_new_h.svg'
+
+import ChatIconNew from '../assets/chat_sb_c_new.svg'
+import ChatIconNewHover from '../assets/chat_sb_c_new_h.svg'
 
 import '../styles/Sidebar.css'
 
@@ -145,22 +154,22 @@ export default function Sidebar({ children }) {
                 <MenuItem
                     href="/"
                     label="Chats"
-                    icon={ChatIcon}
-                    iconHover={ChatIconHover}
+                    icon={ChatIconNew}
+                    iconHover={ChatIconNewHover}
                     open={closed}
                 />
                 <MenuItem
                     href="/"
                     label="Nuevo Chat"
-                    icon={addChat}
-                    iconHover={addChatHover}
+                    icon={addChatNew}
+                    iconHover={addChatNewHover}
                     open={closed}
                 />
                 <MenuItem
                     href="/"
                     label="Texto a voz"
-                    icon={VolumeUp}
-                    iconHover={VolumeUpHover}
+                    icon={VolumeUpNew}
+                    iconHover={VolumeUpNewHover}
                     open={closed}
                 />
                 {/* …en cerrado sólo iconos y tooltip… */}

@@ -21,9 +21,15 @@ html, body, #root {
   transition: width .3s;
   overflow-x: visible;
   overflow-y: visible;
+  outline: 2px solid #101113;
   z-index: 1;
 }
 
+.menu-collapsed > .menu-item > img {
+  width: 40px;
+  height: 40px;
+  transition: transform .3s ease;
+}
 .sidebar-open .sidebar {
   width: 250px;
 }
@@ -48,7 +54,7 @@ html, body, #root {
 }
 
 .menu-collapsed, .menu-open, .chats-links {
-    margin-top: 50px;
+    margin-top: 5px;
 }
 .sidebar-open .toggle-btn {
   transform: rotate(180deg);
@@ -57,9 +63,10 @@ html, body, #root {
   transform: rotate(180deg) scale(1.15);
 }
 .chats-links {
-    font-size: 1.5rem;
+    font-size: 1rem;
     color: #79747E;
     margin-left: 16px;
+    margin-top: 50px;
 }
 .sidebar .logo-text {
   display: none; /* Oculta el texto del logo cuando está colapsado */
@@ -79,6 +86,7 @@ html, body, #root {
 
 .menu-item.collapsed {
   position: relative;
+  justify-content: center;
 }
 
 /* tooltip personalizado */
@@ -129,10 +137,7 @@ html, body, #root {
   border-radius: 4px;
   margin: .25rem 0;
 }
-.menu-item.collapsed {
-  justify-content: center;
-  padding: .5rem; /* cuadrado para icono */
-}
+
 .menu-open a {
   display: flex;
   align-items: center;
@@ -147,8 +152,8 @@ html, body, #root {
     padding: .5rem 1rem;
 }
 .menu-icon {
-  width: 51px;
-  height: 51px;
+  width: 31px;
+  height: 31px;
   object-fit: contain;
   transition: opacity .2s ease, transform .2s ease;
 }
@@ -210,8 +215,8 @@ html, body, #root {
 
 .toggle-btn img,
 .mobile-toggle-btn img {
-  width: 51px;
-  height: 51px;
+  width: 35px;
+  height: 35px;
   pointer-events: none; /* para que el hover lo gestione el botón */
 }
 

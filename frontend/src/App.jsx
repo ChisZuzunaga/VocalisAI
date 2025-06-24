@@ -7,6 +7,7 @@ import TranscriptionPage from './pages/TranscriptionPage.jsx'
 import ChatLayout from './layouts/ChatLayout.jsx'
 import Test from './layouts/Test.jsx'
 import Sidebar from './components/Sidebar.jsx'
+import Chat from './components/Chatbot.jsx'
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,6 +36,7 @@ function App() {
           <Route path="/record" element={<AudioRecorder />} />
           <Route path="/chat" element={<ChatLayout />} />
           <Route path="/ai" element={<Test />} />
+          <Route path='/chatbot' element={<Chat />} />
         </Routes>
       </Sidebar>
     </BrowserRouter>
