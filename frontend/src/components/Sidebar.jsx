@@ -69,11 +69,25 @@ export default function Sidebar({ children }) {
   const [icon, setIcon] = useState(menuIcon)
   const sidebarRef   = useRef(null)
   const mobileNavRef = useRef(null)
+  const overlayRef = useRef(null)
 
   const onToggle = () => {
     setOpen(o => !o)
     setIcon(open ? menuIcon : closeIcon)  // cambia el icono base
   }
+
+  // Añadir/quitar clase al body para estilizar elementos fuera del sidebar
+  useEffect(() => {
+    if (open && window.innerWidth <= 765) {
+      document.body.classList.add('body-with-sidebar-open');
+    } else {
+      document.body.classList.remove('body-with-sidebar-open');
+    }
+    
+    return () => {
+      document.body.classList.remove('body-with-sidebar-open');
+    };
+  }, [open]);
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -95,6 +109,14 @@ export default function Sidebar({ children }) {
 
   return (
     <div className={`app-container ${open ? 'sidebar-open' : ''}`}>
+
+      {/* NUEVO: Overlay para oscurecer cuando el sidebar está abierto en móvil */}
+      <div 
+        ref={overlayRef}
+        className={`sidebar-overlay ${open ? 'active' : ''}`}
+        onClick={() => setOpen(false)}
+      />
+      
       <div className="mobile-navbar" ref={mobileNavRef}>
         <button
           className="mobile-toggle-btn"
@@ -104,6 +126,19 @@ export default function Sidebar({ children }) {
         >
           <img src={icon} alt="toggle menu" />
         </button>
+        <a
+            href="/"
+            className="logo-text-mobile"
+            >
+            VocalisAI
+        </a>
+        <MenuItem
+            href="/"
+            label=""
+            icon={addChatFull}
+            iconHover={addChatFull}
+            open={open}
+        />
       </div>
 
       <aside className="sidebar" ref={sidebarRef}>

@@ -8,6 +8,7 @@ import ChatLayout from './layouts/ChatLayout.jsx'
 import Test from './layouts/Test.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import Chat from './components/Chatbot.jsx'
+import Testbot from './components/Testbot.jsx'
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -37,6 +38,7 @@ function App() {
           <Route path="/chat" element={<ChatLayout />} />
           <Route path="/ai" element={<Test />} />
           <Route path='/chatbot' element={<Chat />} />
+          <Route path='/test' element={<Testbot />} />
         </Routes>
       </Sidebar>
     </BrowserRouter>

@@ -1,0 +1,655 @@
+/* Root container */
+html, body, #root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #555 #292A2D;
+    background-color: #292A2D;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#root::-webkit-scrollbar {
+    width: 6px;
+}
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+#root::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 3px;
+}
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+#root::-webkit-scrollbar-track {
+    background-color: #292A2D;
+}
+
+/* NUEVO ENFOQUE: Estructura más simple */
+.container-chat {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1rem 0.5rem; /* padding base */
+    display: flex;
+    flex-direction: column;
+    min-height: 50vh;
+    transition: all 0.3s ease;
+    background-color: #292A2D;
+    position: relative; /* importante para que los elementos absolutos se posicionen respecto a este */
+}
+.chat-title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #fff;
+    font-size: 1.5rem;
+}
+/* Contenedor de mensajes */
+/* Mensajes - ahora con flex-grow para ocupar espacio disponible */
+/* Contenedor de mensajes - sin margen inferior */
+.messages-container {
+    flex: 1;
+    overflow-x: hidden;
+    padding-bottom: 160px; /* espacio para el input (140px + espacio extra) */
+    position: relative;
+}
+
+
+/* Resto de estilos para mensajes... */
+.message {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: flex-start;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.bot-message {
+    justify-content: flex-start;
+}
+
+.avatar-container {
+    margin-right: 8px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    padding-top: 6px;
+}
+
+.bot-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.message-bubble {
+    padding: 10px 15px;
+    max-width: 70%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.user-message .message-bubble {
+    background-color: #007BFF;
+    color: white;
+    border-radius: 18px;
+    border-bottom-right-radius: 4px;
+}
+
+.bot-message .message-bubble {
+    background-color: transparent;
+    color: white;
+}
+
+.message-bubble p {
+    margin: 0;
+    line-height: 1.4;
+    white-space: normal;
+}
+
+/* Input container: POSICIÓN FIJA pero con mismo ancho que el contenedor */
+.input-container {
+    background-color: #292A2D;
+    position: fixed; /* cambiado a fixed para mantener posición */
+    bottom: 0;
+    left: 0.5rem; /* Valor base para móviles */
+    right: 0.5rem; /* Valor base para móviles */
+    height: 140px;
+    z-index: 20;
+    box-sizing: border-box;
+    padding: 20px 0; /* Solo padding vertical, no horizontal */
+}
+
+.input-container form {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.input-container input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #3A3B3F;
+    background-color: #3A3B3F;
+    color: white;
+    border-radius: 20px;
+    margin-right: 10px;
+    outline: none;
+    min-width: 0;
+}
+/* El efecto de difuminación adaptado a la posición fixed */
+.input-container::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(41, 42, 45, 0), #292A2D);
+    pointer-events: none;
+}
+.input-container button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+/* IMPORTANTE: Transiciones suaves para todos los elementos que deben ajustarse */
+.container-chat,
+.messages-container,
+.input-container,
+.messages-container::after {
+    transition: all 0.3s ease;
+}
+/* MEDIA QUERIES - AJUSTADOS PARA POSICIÓN FIXED */
+@media (min-width: 768px) {
+    .container-chat {
+        padding: 1.5rem 5%;
+    }
+    
+    .input-container {
+        left: 10%;
+        right: 5%;
+    }
+    
+    /* Cuando el sidebar está abierto, ajustar el input manualmente */
+    .sidebar-open .input-container {
+        left: calc(1% + 270px);
+        right: 5%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container-chat {
+        padding: 2rem 10%;
+    }
+    
+    .input-container {
+        left: 12%;
+        right: 8%;
+    }
+    
+    /* Cuando el sidebar está abierto, ajustar el input manualmente */
+    .sidebar-open .input-container {
+        left: calc(4% + 270px);
+        right: 7.5%;
+    }
+}
+
+@media (min-width: 1440px) {
+    .container-chat {
+        padding: 2rem 15%;
+    }
+    
+    .input-container {
+        left: 15%;
+        right: calc(10% + 3rem);
+    }
+
+    .sidebar-open .input-container {
+        left: calc(9% + 270px);
+        right: calc(9.5% + 2rem);
+    }
+}
+
+/* Ajustes específicos para móviles y el sidebar */
+@media (max-width: 765px) {
+    /* En móviles no cambiamos el input cuando el sidebar está abierto */
+    .sidebar-open .input-container {
+        left: 0.5rem;
+        right: 0.5rem;
+        z-index: 0;
+    }
+}
+
+/* Asegurarse que la transición sea suave */
+.input-container {
+    transition: left 0.3s ease, right 0.3s ease;
+}
+
+/* Indicador de "escribiendo..." */
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    min-height: 30px;
+    min-width: 40px;
+    padding: 15px !important;
+}
+
+.typing-indicator span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #aaa;
+    border-radius: 50%;
+    animation: bounce 1.3s linear infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+    0%, 60%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-4px);
+    }
+}
+
+/* Estilos para input y botón deshabilitados */
+input:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: #333;
+}
+
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: #555;
+}
+
+button.waiting {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Estilos para un mensaje de bienvenida más prominente en el centro */
+.welcome-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 50vh; /* Ocupa la mitad de la altura visible */
+    margin: 2rem auto;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+.welcome-message .avatar-container {
+    margin-bottom: 1.5rem;
+    margin-right: 0;
+    align-self: center;
+}
+
+.welcome-message .bot-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(77, 107, 254, 0.3);
+}
+
+.welcome-message .message-bubble {
+    background-color: transparent;
+    max-width: 80%;
+    text-align: center;
+    padding: 0;
+    border: none;
+}
+
+.welcome-message .message-bubble p {
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+/* Efecto de gradiente para el texto */
+.welcome-message .message-bubble p {
+    background: linear-gradient(90deg, #4D6BFE 0%, #FD5352 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+}
+
+/* Línea decorativa bajo el texto */
+.welcome-message .message-bubble p::after {
+    content: "";
+    position: absolute;
+    left: 25%;
+    right: 25%;
+    bottom: -15px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(77, 107, 254, 0.2) 0%, rgba(253, 83, 82, 0.2) 100%);
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Ajustes responsivos */
+@media (max-width: 767px) {
+    .welcome-message .message-bubble p {
+        font-size: 1.3rem;
+    }
+    
+    .welcome-message .bot-avatar {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* Efecto de respiración mejorado */
+@keyframes breatheCombined {
+  0%, 100% {
+    filter: brightness(1);
+    text-shadow: 0 0 5px rgba(77, 107, 254, 0.2);
+  }
+  50% {
+    filter: brightness(1.1);
+    text-shadow: 0 0 12px rgba(77, 107, 254, 0.4);
+  }
+}
+
+@keyframes breatheLine {
+  0%, 100% {
+    background: linear-gradient(90deg, rgba(77, 107, 254, 0.2) 0%, rgba(253, 83, 82, 0.2) 100%);
+    width: 50%;
+    left: 25%;
+    right: 25%;
+  }
+  50% {
+    background: linear-gradient(90deg, rgba(77, 107, 254, 0.4) 0%, rgba(253, 83, 82, 0.4) 100%);
+    width: 60%;
+    left: 20%;
+    right: 20%;
+  }
+}
+
+.welcome-message .message-bubble p {
+  /* Estilos existentes */
+  background: linear-gradient(90deg, #4D6BFE 0%, #FD5352 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  
+  /* Añadir animación de respiración */
+  animation: fadeIn 0.8s ease-in-out forwards, breatheCombined 4s ease-in-out infinite;
+}
+
+/* Avatar con brillo suave */
+.welcome-message .bot-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(77, 107, 254, 0.3);
+  animation: breatheCombined 4s ease-in-out infinite;
+}
+
+/* Línea decorativa animada */
+.welcome-message .message-bubble p::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  height: 2px;
+  animation: breatheLine 4s ease-in-out infinite;
+}
+
+/* Añadir a ChatBot.css */
+
+/* Estilo para el botón de micrófono */
+.mic-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #3A3B3F;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin: 0 10px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.mic-button:hover {
+  background-color: #4D6BFE;
+}
+
+.mic-button.recording {
+  background-color: #FD5352;
+  animation: pulse 1.5s infinite;
+}
+
+.mic-icon-small {
+  width: 20px; /* or any appropriate size */
+  height: auto;
+  max-width: none !important; /* Override any max-width setting */
+}
+
+.mic-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(253, 83, 82, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(253, 83, 82, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(253, 83, 82, 0);
+  }
+}
+
+/* Indicador de grabación dentro del botón */
+.recording-indicator {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2px;
+}
+
+.recording-indicator span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: white;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.recording-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.recording-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Barra de progreso de grabación */
+.recording-progress {
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 15px;
+  background-color: rgba(58, 59, 63, 0.7);
+  border-radius: 0 0 10px 10px;
+  animation: slideUp 0.3s forwards;
+}
+
+.recording-time {
+  font-size: 12px;
+  color: white;
+  margin-bottom: 3px;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4D6BFE 0%, #FD5352 100%);
+  transition: width 0.1s linear;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Ajustar el contenedor de formulario para acomodar el nuevo botón */
+.input-container form {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+/* Añadir a ChatBot.css */
+
+/* Formato de bloques de código */
+.code-block-wrapper {
+  margin: 12px 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #1e1e1e;
+  border: 1px solid #3A3B3F;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #2d2d2d;
+  border-bottom: 1px solid #444;
+}
+
+.code-language {
+  font-size: 0.85rem;
+  color: #ccc;
+  font-family: monospace;
+}
+
+.copy-button {
+  background-color: transparent;
+  border: 1px solid #555;
+  color: #ccc;
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.copy-button:hover {
+  background-color: #444;
+  color: white;
+}
+
+.copy-button:active {
+  transform: scale(0.95);
+}
+
+/* La clase code-block es para el componente SyntaxHighlighter */
+.code-block {
+  margin: 0 !important;
+  border-radius: 0 !important;
+  max-height: 400px;
+  overflow-y: auto !important;
+}
+
+/* Barra de desplazamiento para código largo */
+.code-block::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code-block::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.code-block::-webkit-scrollbar-track {
+  background-color: #2d2d2d;
+}
+
+/* Para código en línea */
+.inline-code {
+  background-color: #2d2d2d;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #e6e6e6;
+  font-size: 0.9em;
+  border: 1px solid #444;
+}
+
+/* Ajustes para burbujas que contienen bloques de código */
+.message-bubble p {
+  margin-bottom: 10px;
+}
+
+.message-bubble p:last-child {
+  margin-bottom: 0;
+}
+

@@ -1,0 +1,233 @@
+/* Estilos para tablas */
+.markdown-table-container {
+  overflow-x: auto;
+  margin: 15px 0;
+}
+
+.markdown-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.markdown-table th {
+  background-color: #2d2d2d;
+  color: #e6e6e6;
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 12px;
+  border: 1px solid #444;
+}
+
+.markdown-table td {
+  padding: 8px 12px;
+  border: 1px solid #444;
+}
+
+.markdown-table tr {
+  background-color: #1e1e1e;
+}
+
+.markdown-table tr:nth-child(even) {
+  background-color: #252525;
+}
+
+.markdown-table tr:hover {
+  background-color: rgba(77, 107, 254, 0.1);
+}
+
+/* Estilos para listas */
+.markdown-list {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.markdown-list li {
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+/* Estilos para listas numeradas */
+.markdown-list.ordered {
+  list-style-type: decimal;
+}
+
+/* Estilos para viñetas */
+.markdown-list.unordered {
+  list-style-type: disc;
+}
+
+/* Estilos para listas anidadas */
+.markdown-list .markdown-list {
+  margin: 5px 0;
+}
+
+.markdown-list.ordered .markdown-list.ordered {
+  list-style-type: lower-alpha;
+}
+
+.markdown-list.ordered .markdown-list.ordered .markdown-list.ordered {
+  list-style-type: lower-roman;
+}
+
+.markdown-list.unordered .markdown-list.unordered {
+  list-style-type: circle;
+}
+
+.markdown-list.unordered .markdown-list.unordered .markdown-list.unordered {
+  list-style-type: square;
+}
+
+/* Estilos para citas */
+.markdown-blockquote {
+  margin: 10px 0;
+  padding: 10px 15px;
+  border-left: 3px solid #4D6BFE;
+  background-color: rgba(58, 59, 63, 0.3);
+  font-style: italic;
+}
+
+.markdown-blockquote p {
+  margin: 0;
+}
+
+/* Estilos para encabezados en mensajes del chatbot */
+.markdown-h1, .markdown-h2, .markdown-h3, .markdown-h4, .markdown-h5, .markdown-h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+/* Título principal con línea decorativa */
+.markdown-h1 {
+  font-size: 1.8em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 1em;
+  background: linear-gradient(90deg, rgba(77, 107, 254, 0.2) 0%, transparent 100%);
+  padding-left: 8px;
+}
+
+/* Subtítulo con acento de color */
+.markdown-h2 {
+  font-size: 1.5em;
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #4D6BFE;
+}
+
+/* Título nivel 3 con indicador visual */
+.markdown-h3 {
+  font-size: 1.3em;
+  color: #FD5352;
+}
+
+/* Título nivel 4 */
+.markdown-h4 {
+  font-size: 1.2em;
+}
+
+/* Títulos menores */
+.markdown-h5 {
+  font-size: 1em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.markdown-h6 {
+  font-size: 0.95em;
+  color: #aaa;
+  font-weight: 500;
+}
+
+/* Efectos hover para mejor interacción */
+.markdown-h1:hover, 
+.markdown-h2:hover, 
+.markdown-h3:hover {
+  transform: translateX(3px);
+  transition: transform 0.2s ease;
+}
+
+/* Primer encabezado en un mensaje sin margen superior */
+.message-bubble .markdown-h1:first-child,
+.message-bubble .markdown-h2:first-child,
+.message-bubble .markdown-h3:first-child,
+.message-bubble .markdown-h4:first-child {
+  margin-top: 0;
+}
+
+/* Espacio después del último encabezado */
+.message-bubble .markdown-h1:last-child,
+.message-bubble .markdown-h2:last-child,
+.message-bubble .markdown-h3:last-child,
+.message-bubble .markdown-h4:last-child {
+  margin-bottom: 0.3em;
+}
+
+/* Separadores horizontales */
+.markdown-hr {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 15px 0;
+}
+
+/* Animación para títulos principales */
+.bot-message .markdown-h1 {
+  position: relative;
+  animation: slideInRight 0.4s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Indicador visual para títulos */
+.bot-message .markdown-h2::before,
+.bot-message .markdown-h3::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 1em;
+  background: currentColor;
+  margin-right: 8px;
+  vertical-align: text-top;
+  border-radius: 2px;
+  opacity: 0.7;
+}
+
+.bot-message .markdown-h2::before {
+  background: #4D6BFE;
+}
+
+.bot-message .markdown-h3::before {
+  background: #FD5352;
+}
+
+/* Mejora de legibilidad */
+.markdown-h1, .markdown-h2, .markdown-h3, .markdown-h4, .markdown-h5, .markdown-h6 {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Títulos con gradientes sutiles */
+.markdown-h1 {
+  background: linear-gradient(90deg, rgba(77, 107, 254, 0.15) 0%, rgba(0, 0, 0, 0) 100%);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.markdown-h2 {
+  background: linear-gradient(90deg, rgba(77, 107, 254, 0.08) 0%, rgba(0, 0, 0, 0) 100%);
+  padding: 3px 6px;
+  border-radius: 3px;
+}

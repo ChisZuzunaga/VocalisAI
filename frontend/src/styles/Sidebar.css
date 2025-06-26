@@ -21,7 +21,6 @@ html, body, #root {
   transition: width .3s;
   overflow-x: visible;
   overflow-y: visible;
-  outline: 2px solid #101113;
   z-index: 1;
 }
 
@@ -211,6 +210,7 @@ html, body, #root {
 /* Navbar móvil (hasta 765px) */
 .mobile-navbar {
   display: none;
+  
 }
 
 .toggle-btn img,
@@ -245,11 +245,29 @@ html, body, #root {
     top: 0; left: 0;
     width: 100%;
     height: 50px;
-    background: #34495e;
+    background: #212327;
     align-items: center;
     padding: 0 1rem;
     z-index: 0;
   }
+  .mobile-navbar .menu-item {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .mobile-navbar .logo-text-mobile {
+    display: flex;
+    flex: 1;
+    font-size: 2rem;
+    color: #ecf0f1;
+    justify-content: center;
+    background: linear-gradient(90deg, #4D6BFE 0%, #FD5352 100%);
+    font-weight: 500;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .mobile-toggle-btn {
     background: none;
     border: none;
@@ -269,5 +287,142 @@ html, body, #root {
   .content {
     margin-left: 0 !important;
     margin-top: 50px;
+  }
+}
+
+/* Mejoras para el overlay y efectos visuales en el contenido visible */
+/* Overlay existente */
+.sidebar-overlay {
+  display: none; /* Por defecto oculto en todas las pantallas */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+}
+
+/* Solo mostrar overlay en pantallas pequeñas */
+@media (max-width: 765px) {
+  .sidebar-overlay {
+    display: block; /* Habilitamos el overlay solo en móviles */
+  }
+
+  /* Cuando está activo */
+  .sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+  
+  /* Cuando el sidebar está abierto */
+  body.body-with-sidebar-open .content {
+    filter: blur(2px); /* Desenfoque sutil */
+    opacity: 0.7; /* Transparencia para oscurecer */
+  }
+  
+  /* Efectos específicos para componentes comunes */
+  body.body-with-sidebar-open .container-chat,
+  body.body-with-sidebar-open .input-container,
+  body.body-with-sidebar-open h1,
+  body.body-with-sidebar-open h2,
+  body.body-with-sidebar-open button:not(.sidebar button):not(.mobile-toggle-btn),
+  body.body-with-sidebar-open .card,
+  body.body-with-sidebar-open .panel {
+    filter: brightness(0.8); /* Oscurecer todos los elementos */
+    transition: filter 0.3s ease;
+  }
+  
+  /* Efecto de escala para hacer más pequeño el contenido principal */
+  body.body-with-sidebar-open main.content > * {
+    transform: scale(0.98);
+    transform-origin: center top;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Asegurarse que el input del chat tiene un efecto visual */
+  body.body-with-sidebar-open .input-container {
+    opacity: 0.7;
+    z-index: 5; /* Por debajo del sidebar pero por encima de otros elementos */
+  }
+  
+  /* El sidebar siempre debe estar por encima */
+  .sidebar {
+    z-index: 95; /* Mayor que el overlay */
+  }
+  
+  /* Para que el efecto de desenfoque se note mejor, añadimos un fondo al contenido */
+  body.body-with-sidebar-open .content::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+/* Transiciones suaves SOLO en pantallas pequeñas */
+@media (max-width: 765px) {
+  .content,
+  .container-chat,
+  .input-container,
+  main.content > * {
+    transition: 
+      opacity 0.3s ease,
+      filter 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .mobile-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    background: #212327;
+    padding: 0 1rem;
+    z-index: 100;
+  }
+  
+  /* Sidebar comienza después de la navbar */
+  .sidebar {
+    position: fixed;
+    top: 50px; /* Altura de la navbar */
+    left: -270px; /* Ocultar completamente */
+    height: calc(100% - 50px);
+    width: 270px; /* Ancho fijo en móvil */
+    z-index: 95;
+  }
+  
+  .sidebar-open .sidebar {
+    left: 0;
+  }
+  
+  /* Configuración de contenido principal */
+  .content {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 50px; /* Espacio para navbar */
+  }
+  
+  /* Eliminar overflow adicional */
+  html, body {
+    overflow: hidden; /* Todo el scroll se maneja desde el componente principal */
+  }
+  
+  #root {
+    overflow-y: auto; /* Solo un scroll principal */
+    height: 100%;
   }
 }

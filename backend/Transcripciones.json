@@ -314,5 +314,49 @@
   {
     "timestamp": "2025-06-23T20:22:16.762411",
     "transcript": "prueba prueba prueba"
+  },
+  {
+    "timestamp": "2025-06-25T16:14:59.301744",
+    "transcript": "(no se detectó voz)"
+  },
+  {
+    "timestamp": "2025-06-25T16:15:03.885188",
+    "transcript": "probando"
+  },
+  {
+    "timestamp": "2025-06-25T16:15:13.050441",
+    "transcript": "(no se detectó voz)"
+  },
+  {
+    "timestamp": "2025-06-25T16:15:21.152384",
+    "transcript": "probando probando"
+  },
+  {
+    "timestamp": "2025-06-25T21:32:17.955065",
+    "transcript": "cómo se hace el color naranjo"
+  },
+  {
+    "timestamp": "2025-06-25T21:33:03.201614",
+    "transcript": "cómo estás papu"
+  },
+  {
+    "timestamp": "2025-06-25T22:00:31.324666",
+    "transcript": "(no se detectó voz)"
+  },
+  {
+    "timestamp": "2025-06-25T22:06:50.359234",
+    "transcript": "damos una función para saber si un número es par o IMPA"
+  },
+  {
+    "timestamp": "2025-06-25T22:09:09.610429",
+    "transcript": "léeme las cartas del tarot"
+  },
+  {
+    "timestamp": "2025-06-25T22:25:58.300742",
+    "transcript": "qué modelo estás usando actualmente"
+  },
+  {
+    "timestamp": "2025-06-25T22:26:11.785609",
+    "transcript": "genera moda función en Python que obtengo número aleatorio"
   }
 ]
