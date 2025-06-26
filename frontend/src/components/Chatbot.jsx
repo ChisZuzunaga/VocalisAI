@@ -1,14 +1,347 @@
 import { useState, useRef, useEffect } from 'react';
 import '../styles/ChatBot.css';
-import botAvatar from '../assets/logo_blue.png';
+import '../styles/Listas.css';
+import botAvatar from '../assets/LOGOICONO.png';
+import micIcon from '../assets/micro.png';
+import api from '../services/api';
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
+import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
+import python from 'react-syntax-highlighter/dist/esm/languages/prism/python';
+import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash';
+import css from 'react-syntax-highlighter/dist/esm/languages/prism/css';
+import sql from 'react-syntax-highlighter/dist/esm/languages/prism/sql';
+
+// Registrar lenguajes comunes
+SyntaxHighlighter.registerLanguage('jsx', jsx);
+SyntaxHighlighter.registerLanguage('javascript', javascript);
+SyntaxHighlighter.registerLanguage('python', python);
+SyntaxHighlighter.registerLanguage('bash', bash);
+SyntaxHighlighter.registerLanguage('css', css);
+SyntaxHighlighter.registerLanguage('sql', sql);
 
 function Chatbot() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
   const [shouldScroll, setShouldScroll] = useState(false);
-  const [isWaiting, setIsWaiting] = useState(false); // Estado para bloquear input mientras esperamos
+  const [isWaiting, setIsWaiting] = useState(false);
   
+  // Estados para la grabación de audio
+  const [recording, setRecording] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const timerRef = useRef(null);
+  const MAX_DURATION = 9; // segundos de grabación máxima
+  
+  
+  // Función mejorada para procesar y formatear mensajes con soporte a múltiples formatos
+  const formatMessage = (text) => {
+    if (!text) return null;
+    
+    // Si el texto no contiene marcadores especiales, devolver como texto plano
+    if (!/```|\*|\||>|-|#|`|\d+\.|•/.test(text)) {
+      return <p>{text}</p>;
+    }
+    
+    let processedContent = [];
+    let currentText = text;
+    let currentIndex = 0;
+    let key = 0;
+    
+    // 1. Procesar bloques de código
+    const codeBlockRegex = /```([a-z]*)\n([\s\S]*?)\n```/g;
+    let match;
+    
+    while ((match = codeBlockRegex.exec(text)) !== null) {
+      // Añadir texto anterior al bloque de código
+      if (match.index > currentIndex) {
+        const textSegment = text.substring(currentIndex, match.index);
+        processedContent.push(
+          <div key={key++}>
+            {parseInlineFormats(textSegment)}
+          </div>
+        );
+      }
+      
+      // Obtener lenguaje y código
+      const language = match[1] || 'javascript';
+      const code = match[2];
+      
+      // Añadir el bloque de código con resaltado
+      processedContent.push(
+        <div className="code-block-wrapper" key={key++}>
+          <div className="code-header">
+            <span className="code-language">{language}</span>
+            <button 
+              className="copy-button"
+              onClick={() => navigator.clipboard.writeText(code)}
+            >
+              Copiar
+            </button>
+          </div>
+          <SyntaxHighlighter 
+            language={language} 
+            style={vscDarkPlus}
+            className="code-block"
+            wrapLines={true}
+          >
+            {code}
+          </SyntaxHighlighter>
+        </div>
+      );
+      
+      currentIndex = match.index + match[0].length;
+    }
+    
+    // Añadir cualquier texto restante después del último bloque de código
+    if (currentIndex < text.length) {
+      const remainingText = text.substring(currentIndex);
+      processedContent.push(
+        <div key={key++}>
+          {parseInlineFormats(remainingText)}
+        </div>
+      );
+    }
+    
+    return <>{processedContent.length ? processedContent : <p>{text}</p>}</>;
+  };
+  
+  // Función para procesar formatos en línea y elementos como tablas y listas
+  const parseInlineFormats = (text) => {
+    if (!text) return null;
+    
+    let segments = [];
+    let currentIndex = 0;
+    
+    // Separar el texto por líneas para procesar elementos multilinea como tablas y listas
+    const lines = text.split('\n');
+    let i = 0;
+    
+    while (i < lines.length) {
+      const line = lines[i];
+      
+      // 1. Procesar tablas
+      if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
+        const tableLines = [];
+        let j = i;
+        
+        // Recopilar todas las líneas de la tabla
+        while (j < lines.length && lines[j].trim().startsWith('|') && lines[j].trim().endsWith('|')) {
+          tableLines.push(lines[j]);
+          j++;
+        }
+        
+        // Si tenemos al menos una línea de tabla y una línea de separación
+        if (tableLines.length >= 3) {
+          segments.push(parseTable(tableLines));
+          i = j;
+          continue;
+        }
+      }
+      
+      // 2. Procesar listas numeradas
+      if (/^\s*\d+\.\s/.test(line)) {
+        const listItems = [];
+        let j = i;
+        
+        while (j < lines.length && /^\s*\d+\.\s/.test(lines[j])) {
+          listItems.push(lines[j].replace(/^\s*\d+\.\s/, ''));
+          j++;
+        }
+        
+        segments.push(
+          <ol className="markdown-list ordered" key={`ol-${i}`}>
+            {listItems.map((item, index) => (
+              <li key={`li-${i}-${index}`}>{parseInlineText(item)}</li>
+            ))}
+          </ol>
+        );
+        i = j;
+        continue;
+      }
+      
+      // 3. Procesar listas con viñetas
+      if (/^\s*[-*•]\s/.test(line)) {
+        const listItems = [];
+        let j = i;
+        
+        while (j < lines.length && /^\s*[-*•]\s/.test(lines[j])) {
+          listItems.push(lines[j].replace(/^\s*[-*•]\s/, ''));
+          j++;
+        }
+        
+        segments.push(
+          <ul className="markdown-list unordered" key={`ul-${i}`}>
+            {listItems.map((item, index) => (
+              <li key={`li-${i}-${index}`}>{parseInlineText(item)}</li>
+            ))}
+          </ul>
+        );
+        i = j;
+        continue;
+      }
+      
+      // 4. Procesar encabezados
+      if (/^#+\s/.test(line)) {
+        const level = line.match(/^(#+)/)[0].length;
+        if (level >= 1 && level <= 6) {
+            const content = line.replace(/^#+\s/, '');
+            
+            segments.push(
+            <div 
+                className={`markdown-h${level}`} 
+                key={`h-${i}`}
+                id={`heading-${content.toLowerCase().replace(/\s+/g, '-')}`} // Añade ID para posibles anclajes
+            >
+                {parseInlineText(content)}
+            </div>
+            );
+            i++;
+            continue;
+        }
+     }
+      
+      // 5. Procesar citas
+      if (/^\s*>\s/.test(line)) {
+        const quoteLines = [];
+        let j = i;
+        
+        while (j < lines.length && /^\s*>\s/.test(lines[j])) {
+          quoteLines.push(lines[j].replace(/^\s*>\s/, ''));
+          j++;
+        }
+        
+        segments.push(
+          <blockquote className="markdown-blockquote" key={`quote-${i}`}>
+            {parseInlineText(quoteLines.join('\n'))}
+          </blockquote>
+        );
+        i = j;
+        continue;
+      }
+      
+      // 6. Procesar líneas horizontales
+      if (/^\s*[-*_]{3,}\s*$/.test(line)) {
+        segments.push(<hr className="markdown-hr" key={`hr-${i}`} />);
+        i++;
+        continue;
+      }
+      
+      // 7. Línea normal
+      segments.push(
+        <p key={`p-${i}`}>{parseInlineText(line)}</p>
+      );
+      i++;
+    }
+    
+    return <>{segments}</>;
+  };
+  
+  // Procesar formatos en línea (negritas, cursivas, código)
+  const parseInlineText = (text) => {
+    if (!text) return '';
+    
+    let parts = [];
+    let currentIndex = 0;
+    let key = 0;
+    
+    // Código en línea
+    const inlineCodeRegex = /`([^`]+)`/g;
+    let match;
+    
+    while ((match = inlineCodeRegex.exec(text)) !== null) {
+      if (match.index > currentIndex) {
+        parts.push(parseStyleFormatting(text.substring(currentIndex, match.index), key++));
+      }
+      
+      parts.push(
+        <code className="inline-code" key={key++}>
+          {match[1]}
+        </code>
+      );
+      
+      currentIndex = match.index + match[0].length;
+    }
+    
+    if (currentIndex < text.length) {
+      parts.push(parseStyleFormatting(text.substring(currentIndex), key++));
+    }
+    
+    return <>{parts}</>;
+  };
+  
+  // Procesar negritas y cursivas
+  const parseStyleFormatting = (text, key) => {
+    if (!text) return '';
+    
+    // Reemplazar negrita
+    text = text.replace(/\*\*(.+?)\*\*/g, (_, content) => {
+      return `<b>${content}</b>`;
+    });
+    
+    // Reemplazar cursiva
+    text = text.replace(/\*(.+?)\*/g, (_, content) => {
+      return `<i>${content}</i>`;
+    });
+    
+    // Si no hay tags HTML, devolver el texto sin procesar
+    if (!/<[^>]+>/.test(text)) {
+      return text;
+    }
+    
+    // Convertir el texto con tags a elementos React
+    return <span key={key} dangerouslySetInnerHTML={{ __html: text }} />;
+  };
+  
+  // Función para parsear tablas
+  const parseTable = (tableLines) => {
+    // Eliminar la línea de separación (segunda línea)
+    const headerLine = tableLines[0];
+    const dataLines = tableLines.slice(2);
+    
+    // Procesar encabezados
+    const headers = headerLine
+      .trim()
+      .split('|')
+      .filter(cell => cell.trim() !== '')
+      .map(cell => cell.trim());
+    
+    // Procesar filas
+    const rows = dataLines.map(line => {
+      return line
+        .trim()
+        .split('|')
+        .filter(cell => cell.trim() !== '')
+        .map(cell => cell.trim());
+    });
+
+    return (
+      <div className="markdown-table-container" key={`table-${tableLines[0]}`}>
+        <table className="markdown-table">
+          <thead>
+            <tr>
+              {headers.map((header, i) => (
+                <th key={`th-${i}`}>{parseInlineText(header)}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={`tr-${i}`}>
+                {row.map((cell, j) => (
+                  <td key={`td-${i}-${j}`}>{parseInlineText(cell)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
   // Función específica para el autoscroll
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -28,25 +361,148 @@ function Chatbot() {
     }
   }, [messages, shouldScroll]);
 
+  // Función para iniciar la grabación de audio
+  const startRecording = async () => {
+    if (isWaiting || recording) return; // No grabar si ya está grabando o esperando respuesta
+    
+    setElapsed(0);
+    setRecording(true);
+    
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream, {
+        mimeType: 'audio/webm;codecs=opus'
+      });
+      
+      audioChunksRef.current = [];
+      mediaRecorderRef.current.ondataavailable = e => {
+        if (e.data.size) audioChunksRef.current.push(e.data);
+      };
+      
+      // Iniciar la grabación
+      mediaRecorderRef.current.start();
+      
+      // Iniciar temporizador con límite de tiempo fijo
+      timerRef.current = setInterval(() => {
+        setElapsed(prev => {
+          const next = +(prev + 0.1).toFixed(1);
+          if (next >= MAX_DURATION) {
+            // Detener la grabación cuando llegue al límite
+            if (timerRef.current) {
+              clearInterval(timerRef.current);
+              timerRef.current = null;
+            }
+            
+            // Importante: Llamar a stopRecording sin depender del estado "recording"
+            if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+              stopRecordingDirectly();
+            }
+            return MAX_DURATION;
+          }
+          return next;
+        });
+      }, 100);
+      
+      // Seguridad adicional: forzar detención después del tiempo límite
+      setTimeout(() => {
+        if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+          console.log("Forzando detención por timeout");
+          stopRecordingDirectly();
+        }
+      }, MAX_DURATION * 1000 + 200);
+      
+    } catch (error) {
+      console.error("Error al iniciar la grabación:", error);
+      setRecording(false);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    }
+  };
+
+  // Nueva función para detener la grabación directamente
+  const stopRecordingDirectly = () => {
+    console.log("Deteniendo grabación directamente");
+    
+    // Limpiar temporizador
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    
+    // Marcar como no grabando
+    setRecording(false);
+    
+    try {
+      // Solo procesamos si realmente está grabando
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+        // Configurar manejador de evento antes de detener
+        mediaRecorderRef.current.onstop = async () => {
+          console.log("Media recorder detenido");
+          const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+          
+          // Liberar todas las pistas antes de procesar
+          if (mediaRecorderRef.current && mediaRecorderRef.current.stream) {
+            mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+          }
+          
+          // Procesar el audio grabado
+          await processAudio(blob);
+        };
+        
+        // Detener la grabación
+        mediaRecorderRef.current.stop();
+      }
+    } catch (error) {
+      console.error("Error al detener la grabación directamente:", error);
+      setIsWaiting(false);
+    }
+  };
+
+  // Función original pero que ahora usa la función directa
+  const stopRecording = () => {
+    if (recording) {
+      stopRecordingDirectly();
+    }
+  };
+
+  // Procesar el audio grabado
+  const processAudio = async (blob) => {
+    setIsWaiting(true); // Indicar que estamos procesando
+    
+    const formData = new FormData();
+    formData.append('file', blob, 'audio.webm');
+    
+    try {
+      const { data } = await api.post('/speech-to-text', formData);
+      if (data.transcript && data.transcript.trim()) {
+        setInput(data.transcript); // Colocar el texto en el input
+      } else {
+        console.log("No se pudo transcribir el audio");
+      }
+    } catch (error) {
+      console.error("Error al transcribir:", error);
+    } finally {
+      setIsWaiting(false); // Terminamos de procesar
+    }
+  };
+
+  // Enviar mensaje (código existente)
   const sendMessage = async () => {
-    if (!input.trim() || isWaiting) return; // No enviar si está esperando o input vacío
+    if (!input.trim() || isWaiting) return;
 
     const userMessage = { sender: "user", text: input };
     
-    // Activar scroll y bloqueo de input
     setShouldScroll(true);
-    setIsWaiting(true); // Bloquear el input
+    setIsWaiting(true);
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
     try {
-      const res = await fetch("http://localhost:8000/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input })
-      });
-
-      const data = await res.json();
+      // En Chatbot.jsx
+      const { data } = await api.post("/api/chat", { message: input });
+      // No necesitas hacer res.json() porque axios ya parsea la respuesta
       if (data.messages) {
         setMessages((prev) => [...prev, data.messages[1]]);
       }
@@ -56,15 +512,13 @@ function Chatbot() {
         text: "Lo siento, hubo un error al procesar tu mensaje."
       }]);
     } finally {
-      setIsWaiting(false); // Desbloquear el input cuando terminamos
+      setIsWaiting(false);
     }
   };
 
   return (
     <div className='container-chat'>
-      
       <div className="messages-container">
-        {/* Mensaje de bienvenida centrado cuando no hay mensajes */}
         {messages.length === 0 && (
           <div className="message bot-message welcome-message">
             <div className="avatar-container">
@@ -76,7 +530,7 @@ function Chatbot() {
           </div>
         )}
         
-        {/* Mensajes de la conversación */}
+        {/* Mensajes con formato de código */}
         {messages.map((msg, idx) => (
           <div 
             key={idx} 
@@ -88,12 +542,11 @@ function Chatbot() {
               </div>
             )}
             <div className="message-bubble">
-              <p>{msg.text}</p>
+              {formatMessage(msg.text)}
             </div>
           </div>
         ))}
 
-        {/* Indicador de "escribiendo..." cuando estamos esperando */}
         {isWaiting && (
           <div className="message bot-message">
             <div className="avatar-container">
@@ -115,21 +568,74 @@ function Chatbot() {
           e.preventDefault();
           sendMessage();
         }}>
-          <input
-            type="text"
+          {/* Reemplazar el input por textarea */}
+          <textarea
             value={input}
-            placeholder={isWaiting ? "Esperando respuesta..." : "Escribe un mensaje..."}
+            placeholder={
+              recording ? "Grabando audio..." : 
+              isWaiting ? "Esperando respuesta..." : 
+              "Escribe un mensaje o pulsa el micrófono"
+            }
             onChange={(e) => setInput(e.target.value)}
-            disabled={isWaiting} // Deshabilitar mientras espera
+            disabled={isWaiting || recording}
+            rows={1}  // Comienza con una línea
+            className="chat-input"  // Para aplicar estilos específicos
+            onKeyDown={(e) => {
+              // Opcional: enviar mensaje con Enter (sin Shift)
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+              }
+            }}
           />
+          
+          {/* Botón de micrófono */}
+          <button 
+            type="button"
+            className={`mic-button ${recording ? 'recording' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              if (recording) {
+                stopRecording();
+              } else if (!isWaiting) {
+                startRecording();
+              }
+            }}
+            disabled={isWaiting}
+            aria-label={recording ? "Detener grabación" : "Iniciar grabación"}
+            title={recording ? "Detener grabación" : "Iniciar grabación"}
+          >
+            <img 
+              src={micIcon} 
+              alt="Micrófono" 
+              className="mic-icon-small" 
+            />
+            {recording && (
+              <div className="recording-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            )}
+          </button>
+          
           <button 
             type="submit" 
-            disabled={isWaiting || !input.trim()} // Deshabilitar si está esperando o no hay texto
+            disabled={isWaiting || !input.trim() || recording}
             className={isWaiting ? "waiting" : ""}
           >
             {isWaiting ? "..." : "Enviar"}
           </button>
         </form>
+        
+        {recording && (
+          <div className="recording-progress-simple">
+            <div 
+              className="progress-bar"
+              style={{ width: `${(elapsed / MAX_DURATION) * 100}%` }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -8,6 +8,9 @@ const Loader = () => (
         <img
             src={Loaderr}
             alt='Loading'
+            style={{ 
+                filter: 'invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)'
+            }}
             className="w-30 h-30"
         />
     </div>

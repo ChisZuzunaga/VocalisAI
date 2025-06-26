@@ -1,21 +1,22 @@
 import { useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
 import Loader from '../components/Loader'
 import micIcon from '../assets/micro.png'
 import '../styles/AudioRecorder.css'
 
-
 const MAX_DURATION = 6 // segundos
 
-const AudioRecorder = () => {
+// Añadir prop onTranscriptionComplete para comunicarse con el padre
+const AudioRecorder = ({ onTranscriptionComplete }) => {
   const mediaRecorderRef = useRef(null)
   const audioChunksRef   = useRef([])
   const timerRef        = useRef(null)
   const [recording, setRecording] = useState(false)
   const [loading, setLoading]     = useState(false)
   const [elapsed, setElapsed]     = useState(0)
-  const navigate = useNavigate()
+  
+  // Ya no necesitamos navigate
+  // const navigate = useNavigate()
 
   const startRecording = async () => {
     setElapsed(0)
@@ -45,11 +46,23 @@ const AudioRecorder = () => {
   const stopRecording = () => {
     clearInterval(timerRef.current)
     setRecording(false)
-    mediaRecorderRef.current.onstop = () => {
-      const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
-      processFile(blob)
+    
+    // Asegurarse de que mediaRecorderRef.current existe
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.onstop = () => {
+        const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        processFile(blob)
+        
+        // Liberar recursos del micrófono
+        if (mediaRecorderRef.current && mediaRecorderRef.current.stream) {
+          mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop())
+        }
+      }
+      
+      if (mediaRecorderRef.current.state !== 'inactive') {
+        mediaRecorderRef.current.stop()
+      }
     }
-    mediaRecorderRef.current.stop()
   }
 
   const processFile = async blob => {
@@ -58,10 +71,15 @@ const AudioRecorder = () => {
     formData.append('file', blob, 'audio.webm')
     try {
       const { data } = await api.post('/speech-to-text', formData)
-      navigate('/transcription', {
-        state: { transcript: data.transcript }
-      })
-    } catch {
+      
+      // En lugar de navegar, enviamos la transcripción al componente padre
+      if (onTranscriptionComplete) {
+        onTranscriptionComplete(data.transcript)
+      }
+      
+      setLoading(false)
+    } catch (error) {
+      console.error('Error al transcribir:', error)
       alert('Error al transcribir')
       setLoading(false)
     }
@@ -84,8 +102,6 @@ const AudioRecorder = () => {
               onPointerDown={e => {
                 e.preventDefault()
                 startRecording()
-                // capturamos el puntero para que el pointerup
-                // siempre dispare aquí aunque salgamos del botón
                 e.currentTarget.setPointerCapture(e.pointerId)
               }}
               onPointerUp={e => {
@@ -125,7 +141,7 @@ const AudioRecorder = () => {
             />
         </div>
     </div>
-)
+  )
 }
 
 export default AudioRecorder

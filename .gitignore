@@ -30,6 +30,9 @@ lerna-debug.log*
 /backend/audios/
 /backend/secrets/
 /backend/.env
+/backend/app/services/model/model.pt
+/backend/app/services/data/si/
+/backend/app/services/data/no/
 
 # -----------------------------
 # Build outputs

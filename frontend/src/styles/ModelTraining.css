@@ -1,0 +1,189 @@
+.model-training-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #fff;
+}
+
+.model-training-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #4D6BFE;
+}
+
+.stats-container {
+  background-color: #2A2B2F;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stat-card {
+  background-color: #3A3B3F;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.model-info p {
+  margin: 5px 0;
+}
+
+.last-modified {
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.training-actions {
+  background-color: #2A2B2F;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.record-buttons {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+@media (max-width: 600px) {
+  .record-buttons {
+    flex-direction: column;
+  }
+}
+
+.record-button {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.record-button.yes {
+  background-color: rgba(77, 107, 254, 0.2);
+  color: #4D6BFE;
+}
+
+.record-button.no {
+  background-color: rgba(253, 83, 82, 0.2);
+  color: #FD5352;
+}
+
+.record-button.yes:hover {
+  background-color: rgba(77, 107, 254, 0.3);
+}
+
+.record-button.no:hover {
+  background-color: rgba(253, 83, 82, 0.3);
+}
+
+.record-button.recording {
+  animation: pulse 1.5s infinite;
+}
+
+.record-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.recording-animation {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: red;
+  animation: blinking 1s infinite;
+}
+
+@keyframes blinking {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.training-controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.training-controls button {
+  flex: 1;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.train-button {
+  background-color: #4D6BFE;
+  color: white;
+}
+
+.predict-button {
+  background-color: #3A3B3F;
+  color: white;
+}
+
+.train-button:hover {
+  background-color: #3a55d9;
+}
+
+.predict-button:hover {
+  background-color: #46474d;
+}
+
+.train-button:disabled, .predict-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.message-container {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}

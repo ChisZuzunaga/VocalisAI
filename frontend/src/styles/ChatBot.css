@@ -465,9 +465,9 @@ button.waiting {
 }
 
 .mic-icon-small {
-  width: 20px; /* or any appropriate size */
-  height: auto;
-  max-width: none !important; /* Override any max-width setting */
+  width: 24px !important;
+  height: 24px !important;
+  max-width: none !important;
 }
 
 .mic-button {
@@ -653,3 +653,194 @@ button.waiting {
   margin-bottom: 0;
 }
 
+
+/* Ondas animadas alrededor del micrófono */
+.recording-waves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.wave {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(253, 83, 82, 0.8);
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  animation: wave 2s infinite;
+  pointer-events: none;
+}
+
+.wave1 {
+  animation-delay: 0s;
+}
+
+.wave2 {
+  animation-delay: 0.6s;
+}
+
+.wave3 {
+  animation-delay: 1.2s;
+}
+
+@keyframes wave {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(253, 83, 82, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(253, 83, 82, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(253, 83, 82, 0);
+  }
+}
+
+/* Barra de progreso de la grabación */
+.recording-progress {
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 15px;
+  background-color: rgba(58, 59, 63, 0.7);
+  border-radius: 0 0 10px 10px;
+  animation: slideUp 0.3s forwards;
+  z-index: 10;
+}
+
+.recording-time {
+  font-size: 12px;
+  color: white;
+  margin-bottom: 3px;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4D6BFE 0%, #FD5352 100%);
+  transition: width 0.1s linear;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Ajustar el contenedor de formulario para acomodar el nuevo botón */
+.input-container form {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  position: relative;
+}
+
+
+/* Barra de progreso simplificada */
+.recording-progress-simple {
+  position: absolute;
+  bottom: 0px;  /* Justo debajo del input */
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-color: rgb(107, 122, 255);
+  overflow: show;
+  z-index: 30;
+  border-radius: 0 0 4px 4px;
+}
+
+.recording-progress-simple .progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4D6BFE 0%, #FD5352 100%);
+  transition: width 0.1s linear;
+}
+
+.mic-button {
+  /* Estilos existentes */
+  transition: all 0.3s ease;
+}
+
+.mic-button:hover {
+  background-color: #4D6BFE;
+}
+
+.mic-button.recording {
+  background-color: #FD5352;
+  animation: pulse 1.5s infinite;
+}
+
+/* Agregar un tooltip para claridad */
+.mic-button::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.mic-button:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Estilos para el textarea */
+.chat-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 20px;
+  background-color: #3A3B3F;
+  color: white;
+  font-family: inherit; /* Mantiene la misma fuente */
+  font-size: 1rem;
+  resize: none; /* Evita que el usuario lo redimensione manualmente */
+  overflow-y: auto; /* Permite scroll vertical */
+  max-height: 120px; /* Altura máxima antes de mostrar scroll */
+  min-height: 20px; /* Altura mínima */
+  line-height: 1.5;
+  outline: none;
+  transition: height 0.2s ease;
+}
+
+.chat-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(77, 107, 254, 0.5);
+}
+
+/* Mantener estilo de placeholder */
+.chat-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}

@@ -1,15 +1,85 @@
-.container-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+/* Estilos para la sección de transcripción */
+.section-right {
+  padding: 20px;
+  background-color: #2A2B2F;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-.section-left,
-.section-right {
+.empty-transcript {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
+  color: #8A8D91;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.transcript-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.container-section {
+  height: 350px;
+}
+
+.transcript-container h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.transcript-text {
+  flex-grow: 1;
+  background-color: rgba(58, 59, 63, 0.4);
+  padding: 15px;
+  border-radius: 8px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  overflow-y: auto;
+  white-space: pre-wrap; /* Mantener saltos de línea */
+  color: #e6e6e6;
+}
+
+.transcript-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.transcript-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.copy-button {
+  background-color: #4D6BFE;
+  color: white;
+}
+
+.copy-button:hover {
+  background-color: #3a55d9;
+}
+
+.clear-button {
+  background-color: #3A3B3F;
+  color: #e6e6e6;
+}
+
+.clear-button:hover {
+  background-color: #46474d;
 }

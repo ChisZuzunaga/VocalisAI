@@ -5,6 +5,7 @@
 
 .jump-char {
   display: inline-block;
+  color: white;
   /* eliminamos margin para no sobreponer caracteres */
   animation: jump .9s infinite alternate;
   /* si quieres más espacio entre letras: */

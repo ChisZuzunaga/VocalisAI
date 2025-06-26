@@ -11,6 +11,12 @@ export default defineConfig({
     cors: true,           // habilita CORS
     allowedHosts: true,  // acepta cualquier host (ngrok, LAN, etc.)
     proxy: {
+      // Configuración de proxy para todas las rutas /training/
+      '/training/': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+      },
       '/random': {
         target: 'http://localhost:8000',
         changeOrigin: true
@@ -27,7 +33,11 @@ export default defineConfig({
       '/audio': {
         target: 'http://localhost:8000',
         changeOrigin: true
-     }
+     },
+      '/api/chat': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
+      }
     }
   }
 })

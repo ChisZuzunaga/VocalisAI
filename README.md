@@ -21,6 +21,21 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
+# PyTorch para el modelo de aprendizaje automático
+pip install torch torchaudio
+pip install torchaudio soundfile pydub
+# FastAPI y dependencias para la API
+pip install fastapi uvicorn python-multipart
+
+# Para el procesamiento de audio
+pip install numpy scipy
+pip install librosa
+
+# Si usas orquestación de tareas en segundo plano (opcional)
+pip install celery
+
+
+
 4. in another **CMD**, Install frontend dependencies (Deactivate Virtual Enviorement)
 ```bash
 cd frontend

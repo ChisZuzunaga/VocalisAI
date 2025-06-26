@@ -133,7 +133,7 @@ export default function Sidebar({ children }) {
             VocalisAI
         </a>
         <MenuItem
-            href="/"
+            href="/chat"
             label=""
             icon={addChatFull}
             iconHover={addChatFull}
@@ -144,7 +144,7 @@ export default function Sidebar({ children }) {
       <aside className="sidebar" ref={sidebarRef}>
         <div className='logo-container'>
             <a
-            href="/"
+            href="/chat"
             className="logo-text"
             >
             VocalisAI
@@ -163,7 +163,7 @@ export default function Sidebar({ children }) {
             ? (
             <nav className="menu menu-open">
                 <MenuItem
-                    href="/"
+                    href="/chat"
                     label="Nuevo Chat"
                     icon={addChatFull}
                     iconHover={addChatFull}
@@ -194,7 +194,7 @@ export default function Sidebar({ children }) {
                     open={closed}
                 />
                 <MenuItem
-                    href="/"
+                    href="/chat"
                     label="Nuevo Chat"
                     icon={addChatNew}
                     iconHover={addChatNewHover}
@@ -203,6 +203,20 @@ export default function Sidebar({ children }) {
                 <MenuItem
                     href="/"
                     label="Texto a voz"
+                    icon={VolumeUpNew}
+                    iconHover={VolumeUpNewHover}
+                    open={closed}
+                />
+                <MenuItem
+                    href="/record"
+                    label="Transcripción"
+                    icon={VolumeUpNew}
+                    iconHover={VolumeUpNewHover}
+                    open={closed}
+                />
+                <MenuItem
+                    href="/training"
+                    label="Modelo Propio"
                     icon={VolumeUpNew}
                     iconHover={VolumeUpNewHover}
                     open={closed}

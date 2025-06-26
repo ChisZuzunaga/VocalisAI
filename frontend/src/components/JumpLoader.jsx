@@ -15,7 +15,7 @@ const JumpLoader = () => {
           return (
             <span
               key={idx}
-              className="jump-char text-black text-lg font-medium"
+              className="jump-char text-white text-lg font-medium"
               style={{ animationDelay: `${idx * 0.05}s` }}
             >
               {char}

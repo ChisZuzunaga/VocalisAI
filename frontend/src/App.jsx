@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Loader from './components/Loader.jsx'
 import AudioRecorder from './pages/AudioRecorder.jsx'
 import RandomNum from './pages/RandomNum.jsx'
-import TranscriptionPage from './pages/TranscriptionPage.jsx'
-import ChatLayout from './layouts/ChatLayout.jsx'
-import Test from './layouts/Test.jsx'
+import Section from './components/Section.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import Chat from './components/Chatbot.jsx'
-import Testbot from './components/Testbot.jsx'
+import ModelTraining from './components/ModelTraining';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,13 +29,9 @@ function App() {
       <Sidebar>
         <Routes>
           <Route path="/" element={<RandomNum />} />
-          <Route path="/loader" element={<Loader />} />
-          <Route path="/transcription" element={<TranscriptionPage />} />
-          <Route path="/record" element={<AudioRecorder />} />
-          <Route path="/chat" element={<ChatLayout />} />
-          <Route path="/ai" element={<Test />} />
-          <Route path='/chatbot' element={<Chat />} />
-          <Route path='/test' element={<Testbot />} />
+          <Route path="/record" element={<Section />} />
+          <Route path='/chat' element={<Chat />} />
+          <Route path='/training' element={<ModelTraining />} />
         </Routes>
       </Sidebar>
     </BrowserRouter>
