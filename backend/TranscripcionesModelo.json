@@ -1,0 +1,212 @@
+[
+  {
+    "timestamp": "2025-06-26T22:26:13.605949",
+    "prediction": "no",
+    "confidence": 0.5047922134399414
+  },
+  {
+    "timestamp": "2025-06-26T22:26:37.894167",
+    "prediction": "no",
+    "confidence": 0.6077538132667542
+  },
+  {
+    "timestamp": "2025-06-26T22:26:45.724488",
+    "prediction": "sí",
+    "confidence": 0.581328272819519
+  },
+  {
+    "timestamp": "2025-06-26T22:27:09.889814",
+    "prediction": "sí",
+    "confidence": 0.5711974501609802
+  },
+  {
+    "timestamp": "2025-06-26T22:27:14.912753",
+    "prediction": "no",
+    "confidence": 0.5773108005523682
+  },
+  {
+    "timestamp": "2025-06-26T22:27:22.593691",
+    "prediction": "sí",
+    "confidence": 0.5350139737129211
+  },
+  {
+    "timestamp": "2025-06-26T22:27:28.737528",
+    "prediction": "no",
+    "confidence": 0.5507466197013855
+  },
+  {
+    "timestamp": "2025-06-26T22:27:33.804206",
+    "prediction": "sí",
+    "confidence": 0.5365720391273499
+  },
+  {
+    "timestamp": "2025-06-26T22:27:38.735352",
+    "prediction": "no",
+    "confidence": 0.5388461947441101
+  },
+  {
+    "timestamp": "2025-06-26T22:27:44.917109",
+    "prediction": "sí",
+    "confidence": 0.5497038960456848
+  },
+  {
+    "timestamp": "2025-06-26T22:27:49.247731",
+    "prediction": "sí",
+    "confidence": 0.6582186222076416
+  },
+  {
+    "timestamp": "2025-06-26T22:27:53.845013",
+    "prediction": "no",
+    "confidence": 0.5082913637161255
+  },
+  {
+    "timestamp": "2025-06-26T22:27:58.810675",
+    "prediction": "sí",
+    "confidence": 0.7050749659538269
+  },
+  {
+    "timestamp": "2025-06-26T22:28:03.374218",
+    "prediction": "no",
+    "confidence": 0.5549163818359375
+  },
+  {
+    "timestamp": "2025-06-26T22:28:07.480955",
+    "prediction": "sí",
+    "confidence": 0.5358778834342957
+  },
+  {
+    "timestamp": "2025-06-26T22:28:15.005437",
+    "prediction": "no",
+    "confidence": 0.5841554403305054
+  },
+  {
+    "timestamp": "2025-06-26T22:28:21.110504",
+    "prediction": "no",
+    "confidence": 0.5260233283042908
+  },
+  {
+    "timestamp": "2025-06-26T22:28:26.806596",
+    "prediction": "no",
+    "confidence": 0.5498203635215759
+  },
+  {
+    "timestamp": "2025-06-26T22:28:32.556743",
+    "prediction": "no",
+    "confidence": 0.8056667447090149
+  },
+  {
+    "timestamp": "2025-06-26T22:28:41.817338",
+    "prediction": "no",
+    "confidence": 0.5034219026565552
+  },
+  {
+    "timestamp": "2025-06-26T22:28:49.157229",
+    "prediction": "sí",
+    "confidence": 0.6195812225341797
+  },
+  {
+    "timestamp": "2025-06-26T22:28:57.668879",
+    "prediction": "no",
+    "confidence": 0.749097466468811
+  },
+  {
+    "timestamp": "2025-06-26T22:29:03.427905",
+    "prediction": "sí",
+    "confidence": 0.5767907500267029
+  },
+  {
+    "timestamp": "2025-06-26T22:29:09.505603",
+    "prediction": "no",
+    "confidence": 0.5274545550346375
+  },
+  {
+    "timestamp": "2025-06-26T22:29:15.866264",
+    "prediction": "no",
+    "confidence": 0.5303532481193542
+  },
+  {
+    "timestamp": "2025-06-26T22:29:20.856215",
+    "prediction": "sí",
+    "confidence": 0.6471766829490662
+  },
+  {
+    "timestamp": "2025-06-26T22:29:25.418553",
+    "prediction": "no",
+    "confidence": 0.5175007581710815
+  },
+  {
+    "timestamp": "2025-06-26T22:29:30.818570",
+    "prediction": "no",
+    "confidence": 0.5042685866355896
+  },
+  {
+    "timestamp": "2025-06-26T22:29:36.067905",
+    "prediction": "no",
+    "confidence": 0.600774884223938
+  },
+  {
+    "timestamp": "2025-06-26T22:29:42.611924",
+    "prediction": "no",
+    "confidence": 0.5546002388000488
+  },
+  {
+    "timestamp": "2025-06-26T22:29:48.701517",
+    "prediction": "no",
+    "confidence": 0.5001646280288696
+  },
+  {
+    "timestamp": "2025-06-26T22:29:53.925319",
+    "prediction": "no",
+    "confidence": 0.5134053826332092
+  },
+  {
+    "timestamp": "2025-06-26T22:29:58.624279",
+    "prediction": "no",
+    "confidence": 0.6102790832519531
+  },
+  {
+    "timestamp": "2025-06-26T22:30:03.516422",
+    "prediction": "sí",
+    "confidence": 0.5106217861175537
+  },
+  {
+    "timestamp": "2025-06-26T22:30:07.972710",
+    "prediction": "sí",
+    "confidence": 0.507734477519989
+  },
+  {
+    "timestamp": "2025-06-26T22:30:16.856878",
+    "prediction": "sí",
+    "confidence": 0.5178408026695251
+  },
+  {
+    "timestamp": "2025-06-26T22:30:22.804643",
+    "prediction": "no",
+    "confidence": 0.5085774064064026
+  },
+  {
+    "timestamp": "2025-06-26T22:30:31.137862",
+    "prediction": "no",
+    "confidence": 0.5097267031669617
+  },
+  {
+    "timestamp": "2025-06-26T22:30:38.444862",
+    "prediction": "no",
+    "confidence": 0.5602115392684937
+  },
+  {
+    "timestamp": "2025-06-26T22:30:44.148490",
+    "prediction": "no",
+    "confidence": 0.5117876529693604
+  },
+  {
+    "timestamp": "2025-06-26T22:30:50.272200",
+    "prediction": "no",
+    "confidence": 0.5147853493690491
+  },
+  {
+    "timestamp": "2025-06-26T22:31:15.861220",
+    "prediction": "no",
+    "confidence": 0.5157042145729065
+  }
+]

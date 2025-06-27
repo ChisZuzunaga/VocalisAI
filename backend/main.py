@@ -33,6 +33,8 @@ AUDIO_DIR = BASE_DIR / "audios"
 AUDIO_DIR.mkdir(exist_ok=True)
 TRANSCRIPTIONS_FILE = Path(__file__).parent / "Transcripciones.json"
 
+TRANSCRIPCIONES_MODELO_FILE = BASE_DIR / "TranscripcionesModelo.json"
+
 # Rutas para el sistema de entrenamiento del modelo
 DATA_DIR = BASE_DIR / "app" / "services" / "data"
 SI_DIR = DATA_DIR / "si"
@@ -138,17 +140,6 @@ async def chat_with_bot(payload: ChatRequest):
         ]
     }
 
-@app.get("/chat")
-async def chat_get():
-    """
-    Manejador para las solicitudes GET a /chat
-    Esto ocurre cuando alguien navega directamente a la URL /chat
-    """
-    # Opción 1: Redireccionar a la página principal
-    return RedirectResponse(url="/")
-    
-    # Opción 2: Mostrar un mensaje explicativo
-    # return {"message": "Esta es la API del chatbot. Por favor, usa el método POST para enviar mensajes o accede a través de la interfaz web."}
 
 @app.get("/verify-api")
 async def verify_api_key():
@@ -298,7 +289,7 @@ async def predict_custom(audio: UploadFile = File(...)):
         # Normalizar amplitud
         if waveform.abs().max() > 0:
             waveform = waveform / waveform.abs().max()
-        
+            
         # Ajustar longitud
         waveform = waveform[:16000]
         if waveform.shape[0] < 16000:
@@ -314,11 +305,32 @@ async def predict_custom(audio: UploadFile = File(...)):
             _, predicted = torch.max(outputs, 1)
             prediction = "sí" if predicted.item() == 0 else "no"
         
-        # Resto del código para guardar transcripción...
+        # Guardar la transcripción en TranscripcionesModelo.json
+        record = {
+            "timestamp": datetime.now().isoformat(),
+            "prediction": prediction,
+            "confidence": float(torch.softmax(outputs, dim=1)[0][predicted.item()].item())
+        }
         
+        # Cargar o crear el archivo JSON
+        if TRANSCRIPCIONES_MODELO_FILE.exists():
+            try:
+                with open(TRANSCRIPCIONES_MODELO_FILE, "r", encoding="utf-8") as f:
+                    entries = json.load(f)
+            except json.JSONDecodeError:
+                entries = []
+        else:
+            entries = []
+        
+        # Añadir nueva transcripción y guardar
+        entries.append(record)
+        with open(TRANSCRIPCIONES_MODELO_FILE, "w", encoding="utf-8") as f:
+            json.dump(entries, f, ensure_ascii=False, indent=2)
+            
         return {
             "success": True,
-            "prediction": prediction
+            "prediction": prediction,
+            "confidence": float(torch.softmax(outputs, dim=1)[0][predicted.item()].item())
         }
     except Exception as e:
         print(f"Error en la predicción: {str(e)}")
@@ -327,8 +339,8 @@ async def predict_custom(audio: UploadFile = File(...)):
         return {"success": False, "error": str(e)}
     finally:
         # Limpiar archivo temporal
-        if temp_path.exists():
-            temp_path.unlink()
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 
     
 @app.get("/training/debug-paths")
